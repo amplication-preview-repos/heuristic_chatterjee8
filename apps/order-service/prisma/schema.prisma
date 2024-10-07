@@ -24,9 +24,21 @@ model Order {
   customer    String?
   id          String           @id @default(cuid())
   orderDate   DateTime?
+  orderItems  OrderItem[]
   status      EnumOrderStatus?
   totalAmount Float?
   updatedAt   DateTime         @updatedAt
+}
+
+model OrderItem {
+  createdAt   DateTime @default(now())
+  id          String   @id @default(cuid())
+  order       Order?   @relation(fields: [orderId], references: [id])
+  orderId     String?
+  price       Float?
+  productName String?
+  quantity    Int?
+  updatedAt   DateTime @updatedAt
 }
 
 enum EnumOrderStatus {

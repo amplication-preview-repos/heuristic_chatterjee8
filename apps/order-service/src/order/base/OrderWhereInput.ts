@@ -13,9 +13,10 @@ import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { Type } from "class-transformer";
-import { IsOptional, IsEnum } from "class-validator";
+import { IsOptional, ValidateNested, IsEnum } from "class-validator";
 import { StringFilter } from "../../util/StringFilter";
 import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
+import { OrderItemListRelationFilter } from "../../orderItem/base/OrderItemListRelationFilter";
 import { EnumOrderStatus } from "./EnumOrderStatus";
 import { FloatNullableFilter } from "../../util/FloatNullableFilter";
 
@@ -53,6 +54,18 @@ class OrderWhereInput {
     nullable: true,
   })
   orderDate?: DateTimeNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => OrderItemListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => OrderItemListRelationFilter)
+  @IsOptional()
+  @Field(() => OrderItemListRelationFilter, {
+    nullable: true,
+  })
+  orderItems?: OrderItemListRelationFilter;
 
   @ApiProperty({
     required: false,

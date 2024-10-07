@@ -6,9 +6,13 @@ import {
   CreateProps,
   TextInput,
   DateTimeInput,
+  ReferenceArrayInput,
+  SelectArrayInput,
   SelectInput,
   NumberInput,
 } from "react-admin";
+
+import { OrderItemTitle } from "../orderItem/OrderItemTitle";
 
 export const OrderCreate = (props: CreateProps): React.ReactElement => {
   return (
@@ -16,6 +20,13 @@ export const OrderCreate = (props: CreateProps): React.ReactElement => {
       <SimpleForm>
         <TextInput label="customer" source="customer" />
         <DateTimeInput label="orderDate" source="orderDate" />
+        <ReferenceArrayInput source="orderItems" reference="OrderItem">
+          <SelectArrayInput
+            optionText={OrderItemTitle}
+            parse={(value: any) => value && value.map((v: any) => ({ id: v }))}
+            format={(value: any) => value && value.map((v: any) => v.id)}
+          />
+        </ReferenceArrayInput>
         <SelectInput
           source="status"
           label="status"

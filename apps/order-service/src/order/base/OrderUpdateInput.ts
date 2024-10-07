@@ -11,17 +11,21 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
+
 import {
   IsString,
   MaxLength,
   IsOptional,
   IsDate,
+  ValidateNested,
   IsEnum,
   IsNumber,
   Min,
   Max,
 } from "class-validator";
+
 import { Type } from "class-transformer";
+import { OrderItemUpdateManyWithoutOrdersInput } from "./OrderItemUpdateManyWithoutOrdersInput";
 import { EnumOrderStatus } from "./EnumOrderStatus";
 
 @InputType()
@@ -48,6 +52,18 @@ class OrderUpdateInput {
     nullable: true,
   })
   orderDate?: Date | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => OrderItemUpdateManyWithoutOrdersInput,
+  })
+  @ValidateNested()
+  @Type(() => OrderItemUpdateManyWithoutOrdersInput)
+  @IsOptional()
+  @Field(() => OrderItemUpdateManyWithoutOrdersInput, {
+    nullable: true,
+  })
+  orderItems?: OrderItemUpdateManyWithoutOrdersInput;
 
   @ApiProperty({
     required: false,
